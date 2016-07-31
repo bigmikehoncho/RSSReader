@@ -24,8 +24,8 @@ import bigmikehoncho.com.rssreader.content.Article;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FeedListFragment extends Fragment {
-	private static final String TAG = FeedListFragment.class.getSimpleName();
+public class ArticlesFragment extends Fragment {
+	private static final String TAG = ArticlesFragment.class.getSimpleName();
 
 	private static final String ARG_FEEDS_LIST = "feeds";
 	private static final String ARG_COLUMN_COUNT = "column-count";
@@ -47,7 +47,7 @@ public class FeedListFragment extends Fragment {
 	private ProgressBar mProgress;
 	private TextView mTVWarning;
 	private RecyclerView mRecyclerView;
-	private MyPageRecyclerViewAdapter mAdapter;
+	private ArticlesAdapter mAdapter;
 	private LinearLayoutManager mLayoutManager;
 
 	// Callback to check when RecyclerView has reached the bottom
@@ -60,7 +60,7 @@ public class FeedListFragment extends Fragment {
 		@Override
 		public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 			super.onScrolled(recyclerView, dx, dy);
-			
+
 			if (mListState != LIST_STATE_LAST_PAGE && mListState != LIST_STATE_LOADING) {
 				int totalItemCount = mLayoutManager.getItemCount();
 				if (mLayoutManager.findLastCompletelyVisibleItemPosition() == totalItemCount - 1) {
@@ -74,12 +74,12 @@ public class FeedListFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public FeedListFragment() {
+	public ArticlesFragment() {
 	}
 
 	@SuppressWarnings("unused")
-	public static FeedListFragment newInstance(ArrayList<Article> listArticle, int columnCount) {
-		FeedListFragment fragment = new FeedListFragment();
+	public static ArticlesFragment newInstance(ArrayList<Article> listArticle, int columnCount) {
+		ArticlesFragment fragment = new ArticlesFragment();
 		Bundle args = new Bundle();
 		args.putSerializable(ARG_FEEDS_LIST, listArticle);
 		args.putInt(ARG_COLUMN_COUNT, columnCount);
@@ -107,7 +107,9 @@ public class FeedListFragment extends Fragment {
 			args.remove(ARG_FEEDS_LIST);
 			mColumnCount = args.getInt(ARG_COLUMN_COUNT);
 		}
-		if (savedInstanceState != null) {
+		if (savedInstanceState == null) {
+			mListState = LIST_STATE_LOADING;
+		} else {
 			mListArticles = (ArrayList<Article>) savedInstanceState.getSerializable(STATE_FEEDS_LIST);
 			mListState = savedInstanceState.getInt(STATE_LIST);
 		}
@@ -125,7 +127,7 @@ public class FeedListFragment extends Fragment {
 
 		mProgress = (ProgressBar) view.findViewById(R.id.progress);
 		mTVWarning = (TextView) view.findViewById(R.id.warning_bar);
-		mAdapter = new MyPageRecyclerViewAdapter(mListArticles, mListener);
+		mAdapter = new ArticlesAdapter(mListArticles, mListener);
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
 		if (mColumnCount <= 1) {
 			mLayoutManager = new LinearLayoutManager(mContext);

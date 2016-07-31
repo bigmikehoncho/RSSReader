@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">RSS Reader</string>
+    <string name="title_enterUrlActivity">Enter URL for feed</string>
+    
+    <string name="default_url">https://wordpress.org/news/feed/</string>
+    <string name="btn_go">GO!</string>
 
     <string name="error_connection">Error: Could not load page.</string>
     <string name="error_network_unavailable">Error: Network is not available.</string>

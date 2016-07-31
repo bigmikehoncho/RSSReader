@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import bigmikehoncho.com.rssreader.FeedListFragment.OnListFragmentInteractionListener;
+import bigmikehoncho.com.rssreader.ArticlesFragment.OnListFragmentInteractionListener;
 import bigmikehoncho.com.rssreader.content.Article;
 
 import java.util.ArrayList;
@@ -16,10 +16,12 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Article} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
+ * 
+ * Adapter for displaying a list of Articles
  */
-public class MyPageRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	public static final int ITEM = 1;
+	public static final int ARTICLE = 1;
 	public static final int LOADING = 2;
 
 	private List<Article> mValues = new ArrayList<>();
@@ -27,7 +29,7 @@ public class MyPageRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
 	private int mLoaderCount = 1;
 
-	public MyPageRecyclerViewAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
+	public ArticlesAdapter(List<Article> items, OnListFragmentInteractionListener listener) {
 		mValues.addAll(items);
 		mListener = listener;
 	}
@@ -47,7 +49,7 @@ public class MyPageRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		RecyclerView.ViewHolder holder = null;
 		switch (viewType) {
-			case ITEM:
+			case ARTICLE:
 				holder = createFeedViewHolder(parent);
 				break;
 			case LOADING:
@@ -66,7 +68,7 @@ public class MyPageRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 	}
 
 	private RecyclerView.ViewHolder createFeedViewHolder(ViewGroup parent) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_feed, parent, false);
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_article, parent, false);
 
 		return new FeedViewHolder(v);
 	}
@@ -108,7 +110,7 @@ public class MyPageRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
 	@Override
 	public int getItemViewType(int position) {
-		return (position >= mValues.size() && mLoaderCount > 0) ? LOADING : ITEM;
+		return (position >= mValues.size() && mLoaderCount > 0) ? LOADING : ARTICLE;
 	}
 
 	public class FeedViewHolder extends RecyclerView.ViewHolder {
